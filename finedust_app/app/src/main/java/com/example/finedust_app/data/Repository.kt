@@ -1,7 +1,8 @@
 package com.example.finedust_app.data
 
 import android.util.Log
-import com.example.finedust_app.data.models.monitoringstation.Items
+import com.example.finedust_app.data.models.airquilty.AirQualityItems
+import com.example.finedust_app.data.models.monitoringstation.MornitoringItems
 import com.example.finedust_app.data.services.AirKoreaApiService
 import com.example.finedust_app.data.services.KakaoLocalApiService
 import com.example.finedust_app.utils.Url
@@ -11,7 +12,7 @@ import retrofit2.create
 
 object Repository {
 
-    suspend fun getNearbyMonitoringStation(latitude:Double,longitude:Double): Items? {
+    suspend fun getNearbyMonitoringStation(latitude:Double,longitude:Double): MornitoringItems? {
         val  tmCoordinates = kakaoLocalApiService
             .getTmCoordinate(longitude , latitude)
             .body()
@@ -22,15 +23,32 @@ object Repository {
         val tmY = tmCoordinates?.y
         Log.d("hch", "getNearbyMonitoringStation: ${tmX},${tmY}")
 
-        return airKoreaApiService
+        val nearbyStation =airKoreaApiService
             .getNearbyMonitoringStation(tmX!!,tmY!!)
             .body()
             ?.response
             ?.body
             ?.items
             ?.minByOrNull { it.tm ?: Double.MAX_VALUE }
+        Log.d("hch", "getNearbyMonitoringStation: ${nearbyStation}")
+        return nearbyStation
 
     }
+    suspend fun getLatestAirQualityData(stationName :String):AirQualityItems? {
+        Log.d("hch", "getLatestAirQualityData: ")
+        val value =airKoreaApiService
+            .getRealtimeAirQualties(stationName)
+            .body()
+            ?.respponse
+            ?.body
+            ?.items
+            ?.firstOrNull()
+
+        return value
+    }
+
+
+
 
     private val kakaoLocalApiService : KakaoLocalApiService by lazy {
         Retrofit.Builder()

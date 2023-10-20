@@ -6,10 +6,10 @@ data class Body(
     @SerializedName("totalCount")
     val totalCount:Int?,
     @SerializedName("items")
-    val items : List<Items>?,
+    val items : List<MornitoringItems>?,
     @SerializedName("numOfRows")
     val NumOfRows : Int?,
     @SerializedName("pageNo")
     val pageNo : Int,
 
-)
+    )
