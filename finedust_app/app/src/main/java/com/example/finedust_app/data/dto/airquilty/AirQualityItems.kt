@@ -1,4 +1,4 @@
-package com.example.finedust_app.data.models.airquilty
+package com.example.finedust_app.data.dto.airquilty
 
 import com.google.gson.annotations.SerializedName
 
@@ -10,7 +10,7 @@ data class AirQualityItems(
     val pm25Grade1h : Grade?,
 
     @SerializedName("pm10Value24")
-    val pm10Value24 : Int?,
+    val pm10Value24 : String?,
 
     @SerializedName("so2Value")
     val so2Value : String?,
@@ -22,7 +22,7 @@ data class AirQualityItems(
     val o3Grade : Grade?,
 
     @SerializedName("pm10Value")
-    val pm10Value : Int?,
+    val pm10Value : String?,
 
     @SerializedName("pm25Flag")
     val pm25Flag : Any?,
@@ -61,7 +61,7 @@ data class AirQualityItems(
     val no2Grade : Grade?,
 
     @SerializedName("pm25Value24")
-    val pm25Value24 : Int?,
+    val pm25Value24 : String?,
 
     @SerializedName("o3Flag")
     val o3Flag : Any?,

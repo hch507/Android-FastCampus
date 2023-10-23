@@ -1,6 +1,5 @@
-package com.example.finedust_app.data.models.airquilty
+package com.example.finedust_app.data.dto.airquilty
 
-import androidx.annotation.ColorRes
 import com.google.gson.annotations.SerializedName
 
 enum class Grade(

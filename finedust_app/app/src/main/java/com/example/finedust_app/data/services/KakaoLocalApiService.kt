@@ -1,8 +1,7 @@
 package com.example.finedust_app.data.services
 
-import com.example.finedust_app.data.models.tmcoordinates.TmcoordinatesResponse
+import com.example.finedust_app.data.dto.tmcoordinates.TmcoordinatesResponse
 import com.example.finedust_app.utils.ApiKey
-import com.example.finedust_app.utils.Url
 import retrofit2.Response
 import retrofit2.http.GET
 

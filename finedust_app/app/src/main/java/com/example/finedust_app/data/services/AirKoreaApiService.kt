@@ -1,7 +1,7 @@
 package com.example.finedust_app.data.services
 
-import com.example.finedust_app.data.models.airquilty.AirQualityResponse
-import com.example.finedust_app.data.models.monitoringstation.MonitoringStaitionResponse
+import com.example.finedust_app.data.dto.airquilty.AirQualityResponse
+import com.example.finedust_app.data.dto.monitoringstation.MonitoringStaitionResponse
 import com.example.finedust_app.utils.ApiKey
 import retrofit2.Response
 import retrofit2.http.GET

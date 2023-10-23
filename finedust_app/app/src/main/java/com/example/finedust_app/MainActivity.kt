@@ -2,25 +2,29 @@ package com.example.finedust_app
 
 import android.Manifest
 import android.annotation.SuppressLint
-import android.app.Activity
 import android.content.pm.PackageManager
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
 import android.view.View
+import androidx.activity.viewModels
 import androidx.core.app.ActivityCompat
-import com.example.finedust_app.data.Repository
-import com.example.finedust_app.data.models.airquilty.AirQualityItems
-import com.example.finedust_app.data.models.airquilty.Grade
-import com.example.finedust_app.data.models.monitoringstation.MornitoringItems
+import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.repeatOnLifecycle
+import com.example.finedust_app.data.dto.airquilty.AirQualityItems
+import com.example.finedust_app.data.dto.airquilty.Grade
+import com.example.finedust_app.data.dto.monitoringstation.MornitoringItems
 import com.example.finedust_app.databinding.ActivityMainBinding
+import com.example.finedust_app.domain.models.MeasureInfoState
+import com.example.finedust_app.ui.MainViewModel
+import com.example.finedust_app.ui.utils.FineDustUiState
 import com.google.android.gms.location.FusedLocationProviderClient
 import com.google.android.gms.location.LocationRequest
 import com.google.android.gms.location.LocationServices
-import com.google.android.gms.tasks.CancellationToken
 import com.google.android.gms.tasks.CancellationTokenSource
 import kotlinx.coroutines.MainScope
 import kotlinx.coroutines.cancel
+import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 import java.lang.Exception
 
@@ -29,8 +33,10 @@ class MainActivity : AppCompatActivity() {
     private lateinit var fusedLocationProviderClient: FusedLocationProviderClient
     private var cancellationTokenSourec:CancellationTokenSource?=null
 
+
     lateinit var binding: ActivityMainBinding
     private val scope = MainScope()
+    private val viewModel : MainViewModel by viewModels()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         binding=ActivityMainBinding.inflate(layoutInflater)
@@ -70,12 +76,25 @@ class MainActivity : AppCompatActivity() {
                 cancellationTokenSourec!!.token
             ).addOnSuccessListener { location->
                 scope.launch {
+
                     binding.errorDescriptionTextView.visibility=View.GONE
                     try {
+                        viewModel.getMeasureInfo(latitude = location.latitude, longitude = location.longitude)
                         Log.d("hch", "onRequestPermissionsResult: 성공")
-                        val station = Repository.getNearbyMonitoringStation(longitude = location.longitude, latitude = location.latitude)
-                        val measureValue =Repository.getLatestAirQualityData(station!!.stationName!!)
-                        displayAirQualityData(station, measureValue!!)
+                        repeatOnLifecycle(Lifecycle.State.STARTED){
+                            viewModel.uiState.collectLatest {
+                              when(it){
+                                  is FineDustUiState.Success ->{
+                                      Log.d("hch", "onRequestPermissionsResult:${it} ")
+                                      displayAirQualityData(it.data)
+                                  }
+                                  else -> {
+
+                                  }
+                              }
+                            }
+                        }
+
                     }catch(exception: Exception){
                         Log.d("hch", "onRequestPermissionsResult: ${exception} ")
                         binding.errorDescriptionTextView.visibility = View.VISIBLE
@@ -93,45 +112,46 @@ class MainActivity : AppCompatActivity() {
         }
 
     }
-    fun displayAirQualityData(monitoringStion : MornitoringItems, measuredValue : AirQualityItems) {
-        Log.d("hch", "displayAirQualityData: ${monitoringStion},${measuredValue}")
-        binding.meausringStationName.text=monitoringStion.stationName
-        binding.measuringstationAddressTextView.text=monitoringStion.addr
+    fun displayAirQualityData(measureInfo : MeasureInfoState?) {
+
+        binding.measuringstationAddressTextView.text=measureInfo?.measureStationAddress
         binding.contentsLayout.animate()
             .alpha(1f)
             .start()
-        (measuredValue.khaiGrade ?: Grade.UNKNOWN).let {
-            binding.totalGradeLabelTextView.text =it.label
-            binding.totalGradeEmojiText.text = it.emoji
-        }
-        with(measuredValue){
-            binding.fineDustInfomationTextView.text=
-                "미세먼지: ${pm10Value} ${(pm10Grade?:Grade.UNKNOWN).emoji}"
-            binding.ultrafineDustInfomationTextView.text=
-                "초미세먼지: ${pm25Value}${(pm25Grade?:Grade.UNKNOWN).emoji}"
 
-            with(binding.so2Item){
-                labelTextView.text="아황산가스"
-                gradeTextView.text=(so2Grade?:Grade.UNKNOWN).toString()
-                valuewTextView.text=so2Value
-            }
-            with(binding.coItem){
-                labelTextView.text="일산화탄소"
-                gradeTextView.text=(coGrade?:Grade.UNKNOWN).toString()
-                valuewTextView.text=coValue
-            }
-            with(binding.o32Item){
-                labelTextView.text="오존"
-                gradeTextView.text=(o3Grade?:Grade.UNKNOWN).toString()
-                valuewTextView.text=o3Value
-            }
-            with(binding.no2Item){
-                labelTextView.text="이산화질소"
-                gradeTextView.text=(no2Grade?:Grade.UNKNOWN).toString()
-                valuewTextView.text=no2Value
-            }
+        binding.totalGradeLabelTextView.text = measureInfo?.totalGradeLabel?: "정보없음"
+        binding.totalGradeEmojiText.text = measureInfo?.totalGradeEmoji
 
+
+        binding.meausringStationName.text=measureInfo?.measureStationName ?: ""
+        binding.measuringstationAddressTextView.text=measureInfo?.measureStationAddress
+        binding.fineDustInfomationTextView.text=
+            "미세먼지: ${measureInfo?.fineDustInfomation ?: " 정보 없음"}"
+        binding.ultrafineDustInfomationTextView.text=
+            "초미세먼지: ${measureInfo?.ultrafineDustInfomation ?: "정보없음"}"
+
+        with(binding.so2Item){
+            labelTextView.text="아황산가스"
+            gradeTextView.text=(measureInfo?.so2Grade?:Grade.UNKNOWN).toString()
+            valuewTextView.text=measureInfo?.so2Value ?: "정보 없음"
         }
+        with(binding.coItem){
+            labelTextView.text="일산화탄소"
+            gradeTextView.text=(measureInfo?.coGrade?:Grade.UNKNOWN).toString()
+            valuewTextView.text=measureInfo?.coValue?: "정보 없음"
+        }
+        with(binding.o32Item){
+            labelTextView.text="오존"
+            gradeTextView.text=(measureInfo?.o3Grade?:Grade.UNKNOWN).toString()
+            valuewTextView.text=measureInfo?.o3Value ?:"정보 없음"
+        }
+        with(binding.no2Item){
+            labelTextView.text="이산화질소"
+            gradeTextView.text=(measureInfo?.no2Grade?:Grade.UNKNOWN).toString()
+            valuewTextView.text=measureInfo?.no2Value ?: "정보 없음"
+        }
+
+
     }
     private fun initVariables(){
         fusedLocationProviderClient=LocationServices.getFusedLocationProviderClient(this)

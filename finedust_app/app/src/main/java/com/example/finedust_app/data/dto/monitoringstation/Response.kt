@@ -1,4 +1,4 @@
-package com.example.finedust_app.data.models.monitoringstation
+package com.example.finedust_app.data.dto.monitoringstation
 
 import com.google.gson.annotations.SerializedName
 

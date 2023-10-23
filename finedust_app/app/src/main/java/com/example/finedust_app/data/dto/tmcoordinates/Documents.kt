@@ -1,4 +1,4 @@
-package com.example.finedust_app.data.models.tmcoordinates
+package com.example.finedust_app.data.dto.tmcoordinates
 
 data class Documents(
     val x : Double,
