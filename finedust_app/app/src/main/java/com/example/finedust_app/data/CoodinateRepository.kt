@@ -5,17 +5,17 @@ import com.example.finedust_app.utils.Url
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import retrofit2.create
+import javax.inject.Inject
 
 data class coordinate(
     val tmX : Double,
     val tmY : Double
 )
-object CoordinateRepository {
-
-
-
+class CoordinateRepository @Inject constructor(
+    private val kakaoLocalApiService: KakaoLocalApiService
+) {
     suspend fun getCoodidate(latitude: Double, longitude: Double): coordinate {
-        val tmCoordinates = CoordinateRepository.kakaoLocalApiService
+        val tmCoordinates = kakaoLocalApiService
             .getTmCoordinate(longitude, latitude)
             .body()
             ?.documents
@@ -24,13 +24,5 @@ object CoordinateRepository {
         val tmY = tmCoordinates?.y
         val coordinateData = coordinate(tmX!!, tmY!!)
         return coordinateData
-    }
-
-    private val kakaoLocalApiService : KakaoLocalApiService by lazy {
-        Retrofit.Builder()
-            .baseUrl(Url.KAKAO_API_BASE_URL)
-            .addConverterFactory(GsonConverterFactory.create())
-            .build()
-            .create()
     }
 }

@@ -7,6 +7,7 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
 import android.view.View
+import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.core.app.ActivityCompat
 import androidx.lifecycle.Lifecycle
@@ -22,12 +23,14 @@ import com.google.android.gms.location.FusedLocationProviderClient
 import com.google.android.gms.location.LocationRequest
 import com.google.android.gms.location.LocationServices
 import com.google.android.gms.tasks.CancellationTokenSource
+import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.MainScope
 import kotlinx.coroutines.cancel
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 import java.lang.Exception
 
+@AndroidEntryPoint
 class MainActivity : AppCompatActivity() {
 
     private lateinit var fusedLocationProviderClient: FusedLocationProviderClient
@@ -76,7 +79,6 @@ class MainActivity : AppCompatActivity() {
                 cancellationTokenSourec!!.token
             ).addOnSuccessListener { location->
                 scope.launch {
-
                     binding.errorDescriptionTextView.visibility=View.GONE
                     try {
                         viewModel.getMeasureInfo(latitude = location.latitude, longitude = location.longitude)
@@ -89,7 +91,7 @@ class MainActivity : AppCompatActivity() {
                                       displayAirQualityData(it.data)
                                   }
                                   else -> {
-
+                                      Toast.makeText(applicationContext, "오류", Toast.LENGTH_SHORT).show()
                                   }
                               }
                             }
@@ -100,17 +102,11 @@ class MainActivity : AppCompatActivity() {
                         binding.errorDescriptionTextView.visibility = View.VISIBLE
                     }finally {
                         binding.progressBar.visibility= View.GONE
-                        // 새로고침 완료시,
-                        // 새로고침 아이콘이 사라질 수 있게 isRefreshing = false
                         binding.refresh.isRefreshing=false
                     }
-
                 }
-
             }
-
         }
-
     }
     fun displayAirQualityData(measureInfo : MeasureInfoState?) {
 
@@ -151,7 +147,6 @@ class MainActivity : AppCompatActivity() {
             valuewTextView.text=measureInfo?.no2Value ?: "정보 없음"
         }
 
-
     }
     private fun initVariables(){
         fusedLocationProviderClient=LocationServices.getFusedLocationProviderClient(this)
@@ -167,7 +162,6 @@ class MainActivity : AppCompatActivity() {
             REQUEST_ACCESS_LOCATION_PERMISSIONS
         )
     }
-
     companion object{
         private const val REQUEST_ACCESS_LOCATION_PERMISSIONS =100
     }

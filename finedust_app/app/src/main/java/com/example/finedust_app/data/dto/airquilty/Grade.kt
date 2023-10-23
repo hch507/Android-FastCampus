@@ -20,7 +20,7 @@ enum class Grade(
 
 
     override fun toString(): String {
-        return "${label},${emoji}"
+        return "${label}${emoji}"
     }
 
 }

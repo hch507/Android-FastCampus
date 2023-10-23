@@ -4,14 +4,18 @@ import android.util.Log
 import com.example.finedust_app.data.CoordinateRepository
 import com.example.finedust_app.data.AirkoreaRepository
 import com.example.finedust_app.domain.models.MeasureInfoState
+import javax.inject.Inject
 
-class GetMeasureInfoUseCase()  {
+class GetMeasureInfoUseCase @Inject constructor(
+    private val coordinateRepository: CoordinateRepository,
+    private val airKoreaRepository: AirkoreaRepository
+)  {
      operator suspend fun invoke(latitude: Double, longitude: Double):MeasureInfoState {
-         val coodinate = CoordinateRepository.getCoodidate(latitude, longitude)
+         val coodinate = coordinateRepository.getCoodidate(latitude, longitude)
          Log.d("hch", "invoke: coordinate: ${coodinate} ")
-         val monitoringInfo = AirkoreaRepository.getNearbyMonitoringStation(coodinate.tmX,coodinate.tmY )
+         val monitoringInfo = airKoreaRepository.getNearbyMonitoringStation(coodinate.tmX,coodinate.tmY )
          Log.d("hch", "invoke: monitoring ${monitoringInfo}")
-         val airQualityInfo = AirkoreaRepository.getLatestAirQualityData(monitoringInfo?.stationName!!)
+         val airQualityInfo = airKoreaRepository.getLatestAirQualityData(monitoringInfo?.stationName!!)
          Log.d("hch", "invoke: monitoring ${airQualityInfo}")
          return MeasureInfoState(
              measureStationName = monitoringInfo.stationName,
