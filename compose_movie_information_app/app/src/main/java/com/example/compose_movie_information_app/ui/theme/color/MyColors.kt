@@ -1,10 +1,11 @@
 package com.example.compose_movie_information_app.ui.theme.color
 
+import androidx.compose.material3.ColorScheme
 import androidx.compose.ui.graphics.Color
 import androidx.wear.compose.material.Colors
 
 data class MyColors(
-    val material: Colors,
+    val material: ColorScheme,
     val tertiary: Color = material.primary,
     val onPrimaryAlt: Color = material.onPrimary,
     val success: Color = Color.Green,
@@ -18,9 +19,7 @@ data class MyColors(
     val progressItemColor: Color = Color.Black
 ) {
     val primary: Color get() = material.primary
-    val primaryVariant: Color get() = material.primaryVariant
     val secondary: Color get() = material.secondary
-    val secondaryVariant: Color get() = material.secondaryVariant
     val background: Color get() = material.background
     val surface: Color get() = material.surface
     val error: Color get() = material.error

@@ -1,5 +1,8 @@
 package com.example.compose_movie_information_app.ui.theme.color
 
+import androidx.compose.material3.ColorScheme
+import androidx.compose.material3.darkColorScheme
+import androidx.compose.material3.lightColorScheme
 import androidx.compose.ui.graphics.Color
 import androidx.wear.compose.material.Colors
 
@@ -33,11 +36,9 @@ sealed class ColorSet {
 
     object Red : ColorSet() {
         override var LightColors = MyColors(
-            material = Colors(
+            material = lightColorScheme(
                 primary = Red700,
-                primaryVariant = Red800,
                 secondary = Purple900,
-                secondaryVariant = Purple700,
                 surface = White,
                 onSurface = Black,
                 background = White,
@@ -51,11 +52,9 @@ sealed class ColorSet {
         )
 
         override var DarkColors = MyColors(
-            material = Colors(
+            material = darkColorScheme(
                 primary = Purple900,
-                primaryVariant = Red800,
                 secondary = Purple900,
-                secondaryVariant = Purple700,
                 surface = White,
                 onSurface = Black,
                 background = White,
@@ -68,11 +67,9 @@ sealed class ColorSet {
 
     object Blue : ColorSet() {
         override var LightColors = MyColors(
-            material = Colors(
+            material = lightColorScheme(
                 primary = Blue400,
-                primaryVariant = Purple400,
                 secondary = Red900,
-                secondaryVariant = Red700,
                 surface = White,
                 onSurface = Purple900,
                 background = White,
@@ -86,11 +83,9 @@ sealed class ColorSet {
         )
 
         override var DarkColors = MyColors(
-            material = Colors(
+            material = darkColorScheme(
                 primary = Red900,
-                primaryVariant = Purple400,
                 secondary = Blue400,
-                secondaryVariant = Purple900,
                 surface = White,
                 onSurface = Purple900,
                 background = White,
