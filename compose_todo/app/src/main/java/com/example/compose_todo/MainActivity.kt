@@ -89,7 +89,6 @@ fun topLevel() {
         todoList.set(i, todoList.get(i).copy(done = check))
     }
     val onEdit : (Int, String) -> Unit = { key, text ->
-
         val i = todoList.indexOfFirst { it.key == key }
         todoList.set(i, todoList.get(i).copy(text=text))
     }
@@ -172,7 +171,6 @@ fun todo(
             }
         }
     }
-
 }
 
 @Preview(showBackground = true)
