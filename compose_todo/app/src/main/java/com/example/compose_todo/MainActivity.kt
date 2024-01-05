@@ -23,6 +23,7 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -31,6 +32,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.example.compose_todo.model.TodoData
+import com.example.compose_todo.ui.MainViewModel
 import com.example.compose_todo.ui.theme.Compose_todoTheme
 
 class MainActivity : ComponentActivity() {
@@ -72,9 +74,11 @@ fun todoInput(
     }
 }
 
+@JvmOverloads
 @OptIn(ExperimentalMaterial3Api::class)
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
 @Composable
+<<<<<<< HEAD
 fun topLevel() {
     var (text, setText) = remember { mutableStateOf("") }
     var todoList = remember {
@@ -96,16 +100,23 @@ fun topLevel() {
         val i = todoList.indexOfFirst { it.key == key }
         todoList.removeAt(i)
     }
+=======
+fun topLevel(viewModel: MainViewModel = androidx.lifecycle.viewmodel.compose.viewModel()) {
+
+
+>>>>>>> d1ff39d915d2c37967d34bf4e3176d20a4673ffb
     Scaffold {
-        Column() {
-            todoInput(text = text, onTextChange = setText, onSubmit = onSubmit)
+        Column(
+            modifier= Modifier.padding(12.dp)
+        ) {
+            todoInput(text = viewModel.text.observeAsState().value.toString(), onTextChange = { viewModel.text.value =it}, onSubmit = viewModel.onSubmit)
             LazyColumn {
-                items(todoList) {
+                items(viewModel.todoList) {
                     todo(
                         todoData = it,
-                        onToggle = onToggle,
-                        onEdit = onEdit ,
-                        onDelete = onDelete
+                        onToggle = viewModel.onToggle,
+                        onEdit = viewModel.onEdit ,
+                        onDelete = viewModel.onDelete
                     )
                 }
             }
