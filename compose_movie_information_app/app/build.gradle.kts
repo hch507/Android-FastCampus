@@ -12,7 +12,7 @@ android {
 
     defaultConfig {
         applicationId = "com.example.compose_movie_information_app"
-        minSdk = 24
+        minSdk = 25
         targetSdk = 33
         versionCode = 1
         versionName = "1.0"
