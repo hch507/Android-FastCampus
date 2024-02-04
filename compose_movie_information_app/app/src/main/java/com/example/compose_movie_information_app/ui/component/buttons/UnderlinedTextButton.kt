@@ -11,6 +11,7 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.tooling.preview.Preview
 import com.example.compose_movie_information_app.ui.theme.color
 import com.example.compose_movie_information_app.ui.theme.color.Padding
 
@@ -25,8 +26,8 @@ fun UnderLinedTextButton(
         shape = MaterialTheme.shapes.large,
         modifier = modifier.fillMaxWidth(),
         colors = ButtonDefaults.buttonColors(
-            containerColor = MaterialTheme.color.primary,
-            contentColor = MaterialTheme.color.onPrimary,
+            containerColor = MaterialTheme.color.background,
+            contentColor = MaterialTheme.color.secondary,
             disabledContainerColor = MaterialTheme.color.background,
             disabledContentColor = MaterialTheme.color.disabledSecondary
         )
@@ -37,5 +38,12 @@ fun UnderLinedTextButton(
         ) {
             Text(text = text, modifier= Modifier.padding(Padding.small))
         }
+    }
+}
+@Preview(showBackground = true)
+@Composable
+fun PreviewUnderLinedTextButton(){
+    UnderLinedTextButton(text = "submit") {
+        
     }
 }
