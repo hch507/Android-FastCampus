@@ -1,8 +1,11 @@
 package com.example.news_app
 
+import android.content.Context
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
+import android.view.inputmethod.EditorInfo
+import android.view.inputmethod.InputMethodManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.news_app.databinding.ActivityMainBinding
 
@@ -70,7 +73,21 @@ class MainActivity : AppCompatActivity() {
             newsService.sportNews().submitList()
         }
 
+        binding.searchTextInputEditText.setOnEditorActionListener { textView, i, keyEvent ->
+            if(i == EditorInfo.IME_ACTION_SEARCH){
+                binding.chipGroup.clearCheck()
 
+                binding.searchTextInputEditText.clearFocus()
+                val imm = getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+                imm.hideSoftInputFromWindow(textView.windowToken,0)
+                newsService.search(binding.searchTextInputEditText.text.toString()).submitList()
+
+                return@setOnEditorActionListener true
+            }
+            return@setOnEditorActionListener false
+        }
+        binding.feedChip.isChecked=true
+        newsService.mainFeed().submitList()
     }
     private fun Call<NewsRss>.submitList(){
         enqueue(object : Callback<NewsRss>{
