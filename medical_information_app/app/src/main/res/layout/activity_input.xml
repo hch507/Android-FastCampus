@@ -6,6 +6,17 @@
     android:layout_height="match_parent"
     tools:context=".InputActivity">
 
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/saveButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:clickable="true"
+        android:layout_margin="36dp"
+        android:src="@android:drawable/ic_menu_save"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        />
+
     <TextView
         android:id="@+id/nameTextView"
         style="@style/Title"
@@ -73,12 +84,11 @@
 
     <RadioGroup
         android:id="@+id/bloodTypeRadioGroup"
-        android:layout_width="0dp"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:gravity="end"
         android:orientation="horizontal"
         app:layout_constraintBottom_toBottomOf="@id/bloodTypeTextView"
-        app:layout_constraintEnd_toStartOf="@+id/bloodTypeSpinner"
+
         app:layout_constraintStart_toStartOf="@id/guideline"
         app:layout_constraintTop_toTopOf="@id/bloodTypeTextView">
 
@@ -97,13 +107,12 @@
 
     <Spinner
         android:id="@+id/bloodTypeSpinner"
-        android:layout_width="40dp"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
         app:layout_constraintBottom_toBottomOf="@id/bloodTypeTextView"
         app:layout_constraintEnd_toEndOf="@id/nameEditTextView"
-        app:layout_constraintTop_toTopOf="@id/bloodTypeTextView"
-
-        />
+        app:layout_constraintStart_toEndOf="@+id/bloodTypeRadioGroup"
+        app:layout_constraintTop_toTopOf="@id/bloodTypeTextView" />
 
     <CheckBox
         android:id="@+id/checkBox"
@@ -170,4 +179,11 @@
         android:layout_height="wrap_content"
         android:orientation="vertical"
         app:layout_constraintGuide_percent="0.4" />
+
+    <androidx.constraintlayout.helper.widget.Layer
+        android:id="@+id/layer"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:constraint_referenced_ids="birthEditTextView,birthImageView"
+        tools:ignore="MissingConstraints" />
 </androidx.constraintlayout.widget.ConstraintLayout>
