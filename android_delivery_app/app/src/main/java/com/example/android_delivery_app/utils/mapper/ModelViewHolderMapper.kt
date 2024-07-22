@@ -21,10 +21,13 @@ import com.example.android_delivery_app.widget.adapter.viewholder.ModelViewHolde
     ): ModelViewHolder<M>{
         val inflater = LayoutInflater.from(parent.context)
         val viewHolder = when(type){
+
             CellType.EMPTY_CELL->{
                 EmptyViewHolder(ViewholderEmptyBinding.inflate(inflater, parent, false),viewModel ,resourceProvider)
             }
+
         }
+
         return viewHolder as ModelViewHolder<M>
     }
 }
