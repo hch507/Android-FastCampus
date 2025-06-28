@@ -25,6 +25,7 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.example.part4_compose_movie_app.R
+import com.example.part4_compose_movie_app.ui.theme.Padding
 
 
 private val CARD_WIDTH = 150.dp
@@ -34,7 +35,7 @@ fun MovieItem() {
     Column(
         modifier = Modifier
             .width(CARD_WIDTH)
-            .padding(10.dp)
+            .padding(Padding.large)
     ) {
         Poster(
             modifier = Modifier.width(
@@ -46,17 +47,20 @@ fun MovieItem() {
             maxLines = 1,
             overflow = TextOverflow.Ellipsis,
             modifier = Modifier.padding(
-                top = 11.dp
+                top = Padding.large
             )
         )
         Row(
             modifier = Modifier.padding(
-                vertical = 10.dp
+                vertical = Padding.large
             ),
             verticalAlignment = Alignment.CenterVertically
         ) {
             Icon(
-                modifier = Modifier.size(12.dp),
+
+                modifier = Modifier
+                    .padding(Padding.small)
+                    .size(12.dp),
                 painter = painterResource(id = R.drawable.ic_star_24),
                 tint = Color.Black.copy(
                     0.5f
