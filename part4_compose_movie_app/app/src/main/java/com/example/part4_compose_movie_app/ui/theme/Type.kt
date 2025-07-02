@@ -6,6 +6,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.unit.sp
 
 // Set of Material typography styles to start with
@@ -13,10 +14,10 @@ val Typography = Typography(
     h1 = TextStyle(
         fontSize = 60.sp
     ),
-    h2 =  TextStyle(
+    h2 = TextStyle(
         fontSize = 32.sp
     ),
-    h3 =  TextStyle(
+    h3 = TextStyle(
         fontSize = 24.sp
     ),
     button = TextStyle(
@@ -34,9 +35,16 @@ val Typography = Typography(
     body2 = TextStyle(
         fontSize = 14.sp
     )
+
 )
 
-val Typography.h3Title :TextStyle
+val Typography.h3Title: TextStyle
     @Composable get() = h3.copy(
         fontSize = 26.sp
+    )
+
+val Typography.underline:TextStyle
+    @Composable get() =h3.copy(
+        fontSize = 16.sp,
+        textDecoration = TextDecoration.Underline
     )

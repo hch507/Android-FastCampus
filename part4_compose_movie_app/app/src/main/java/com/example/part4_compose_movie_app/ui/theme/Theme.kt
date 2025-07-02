@@ -5,6 +5,9 @@ import android.os.Build
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.material.MaterialTheme
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.CompositionLocalProvider
+import androidx.compose.runtime.ReadOnlyComposable
+import androidx.compose.runtime.staticCompositionLocalOf
 import androidx.compose.ui.platform.LocalContext
 import com.example.part4_compose_movie_app.ui.theme.color.ColorSet
 import com.example.part4_compose_movie_app.ui.theme.color.MyColors
@@ -24,9 +27,20 @@ fun Part4_compose_movie_appTheme(
     }else{
         myColors.LightColors
     }
-    MaterialTheme(
-        colors.material,
-        typography = Typography,
-        content = content
-    )
+    CompositionLocalProvider(LocalColors provides colors) {
+        MaterialTheme(
+            colors.material,
+            typography = Typography,
+            content = content
+        )
+    }
+
 }
+val LocalColors = staticCompositionLocalOf<MyColors> {
+    error("No MyColors provided")
+}
+
+val MaterialTheme.colorScheme: MyColors
+    @Composable
+    @ReadOnlyComposable
+    get() = LocalColors.current

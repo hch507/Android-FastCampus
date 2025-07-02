@@ -11,6 +11,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.example.part4_compose_movie_app.ui.theme.Padding
+import com.example.part4_compose_movie_app.ui.theme.Part4_compose_movie_appTheme
 
 @Composable
 fun CategoryTitle(titleName: String) {
@@ -28,7 +29,7 @@ fun Category(){
     Column {
         CategoryTitle(titleName = "Action")
         LazyRow(
-            contentPadding = PaddingValues(horizontal = Padding.)
+            contentPadding = PaddingValues(horizontal = Padding.large)
         ) {
 //            itemIndexed
             item {
@@ -40,6 +41,9 @@ fun Category(){
 @Preview
 @Composable
 fun CategoryPreview(){
-    Category()
+    Part4_compose_movie_appTheme {
+        Category()
+    }
+
 }
 
